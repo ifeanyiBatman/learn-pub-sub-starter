@@ -1,0 +1,79 @@
+[?25l[?2004h╭───────────────────────────────────────────────────────────╮
+│ ⣽  GET http://localhost:15672/api/queues/%2F/pause.suntzu │
+╰┬──────────────────────────────────────────────────────────╯
+[3A [J[2K[?2004l[?25h[?1002l[?1003l[?1006l╭────────────────────────────────────────────────────────╮
+│ GET http://localhost:15672/api/queues/%2F/pause.suntzu │
+╰┬───────────────────────────────────────────────────────╯
+ ├─  ?  Expecting status code: 200
+ ├─  ?  Expecting JSON at .auto_delete to be equal to true
+ ├─  ?  Expecting JSON at .exclusive to be equal to true
+ ├─  ?  Expecting JSON at .durable to be equal to false
+  Response Status Code: 200
+  Response Body: 
+{
+  "arguments": {},
+  "auto_delete": true,
+  "consumer_capacity": 0,
+  "consumer_details": [],
+  "consumer_utilisation": 0,
+  "consumers": 0,
+  "deliveries": [],
+  "durable": false,
+  "effective_policy_definition": {},
+  "exclusive": true,
+  "exclusive_consumer_tag": null,
+  "garbage_collection": {
+    "fullsweep_after": 65535,
+    "max_heap_size": 0,
+    "min_bin_vheap_size": 46422,
+    "min_heap_size": 233,
+    "minor_gcs": 0
+  },
+  "head_message_timestamp": null,
+  "idle_since": "2026-02-18T12:32:31.307+00:00",
+  "incoming": [],
+  "memory": 6280,
+  "message_bytes": 0,
+  "message_bytes_paged_out": 0,
+  "message_bytes_persistent": 0,
+  "message_bytes_ram": 0,
+  "message_bytes_ready": 0,
+  "message_bytes_unacknowledged": 0,
+  "messages": 0,
+  "messages_details": {
+    "rate": 0
+  },
+  "messages_paged_out": 0,
+  "messages_persistent": 0,
+  "messages_ram": 0,
+  "messages_ready": 0,
+  "messages_ready_details": {
+    "rate": 0
+  },
+  "messages_ready_ram": 0,
+  "messages_unacknowledged": 0,
+  "messages_unacknowledged_details": {
+    "rate": 0
+  },
+  "messages_unacknowledged_ram": 0,
+  "name": "pause.suntzu",
+  "node": "rabbit@6cfe05241d31",
+  "operator_policy": null,
+  "owner_pid_details": {
+    "name": "172.17.0.1:45078 -\u003e 172.17.0.2:5672",
+    "peer_host": "172.17.0.1",
+    "peer_port": 45078
+  },
+  "policy": null,
+  "recoverable_slaves": null,
+  "reductions": 7731,
+  "reductions_details": {
+    "rate": 0
+  },
+  "single_active_consumer_tag": null,
+  "state": "running",
+  "storage_version": 1,
+  "type": "classic",
+  "vhost": "/"
+}
+
