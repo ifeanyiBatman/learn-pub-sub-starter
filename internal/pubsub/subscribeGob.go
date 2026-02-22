@@ -1,26 +1,20 @@
 package pubsub
 
 import (
-	"encoding/json"
+	"bytes"
+	"encoding/gob"
 	"fmt"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
-type AckType string
 
-const (
-	Ack AckType = "ack"
-	NackReque AckType = "nackReque"
-	NackDiscard AckType = "nackDiscard"
-)
-
-func SubscribeJSON[T any](
+func SubscribeGob[T any](
 	conn *amqp.Connection,
 	exchange,
 	queueName,
 	key string,
 	queueType SimpleQueueType, // an enum to represent "durable" or "transient"
-	handler func(T)AckType,
+	handler func(T) AckType,
 ) error {
 	channel, queue, err := DeclareAndBind(conn, exchange, queueName, key, queueType)
 	if err != nil {
@@ -33,14 +27,16 @@ func SubscribeJSON[T any](
 	go func() {
 		for d := range delivery {
 			var val T
-			err := json.Unmarshal(d.Body, &val)
+			buf := bytes.NewBuffer(d.Body)
+			dec := gob.NewDecoder(buf)
+			err := dec.Decode(&val)
 			if err != nil {
 				continue
 			}
 			fmt.Printf("received message on queue %s\n", queue.Name)
 			acknowledged := handler(val)
 			switch acknowledged {
-			case Ack: 
+			case Ack:
 				d.Ack(false)
 				fmt.Println("message acked")
 			case NackReque:

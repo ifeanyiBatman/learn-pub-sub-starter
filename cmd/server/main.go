@@ -30,7 +30,17 @@ func main() {
 	defer conn.Close()
 	fmt.Println("Connected to RabbitMQ")
 
-	pubsub.DeclareAndBind(conn, routing.ExchangePerilTopic, routing.GameLogSlug, "game_logs.*", pubsub.Durable)
+	err = pubsub.SubscribeGob(
+		conn,
+		routing.ExchangePerilTopic,
+		routing.GameLogSlug,
+		routing.GameLogSlug+".*",
+		pubsub.Durable,
+		handlerGameLogs(),
+	)
+	if err != nil {
+		fmt.Printf("error subscribing to game logs: %v\n", err)
+	}
 
 	for {
 		words := gamelogic.GetInput()

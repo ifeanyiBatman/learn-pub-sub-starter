@@ -5,10 +5,9 @@ import amqp "github.com/rabbitmq/amqp091-go"
 type SimpleQueueType string
 
 const (
-	Durable SimpleQueueType = "durable"
+	Durable   SimpleQueueType = "durable"
 	Transient SimpleQueueType = "transient"
 )
-
 
 func DeclareAndBind(
 	conn *amqp.Connection,
@@ -23,13 +22,13 @@ func DeclareAndBind(
 	}
 	isDurable := queueType == "durable"
 	isAutoDelete := !isDurable
-	isExclusive :=  isAutoDelete
+	isExclusive := isAutoDelete
 
-	queue, err := channel.QueueDeclare(queueName,isDurable,isAutoDelete,isExclusive,false,nil)
+	queue, err := channel.QueueDeclare(queueName, isDurable, isAutoDelete, isExclusive, false, amqp.Table{"x-dead-letter-exchange": "peril_dlx"})
 	if err != nil {
 		return nil, amqp.Queue{}, err
 	}
-	err = channel.QueueBind(queue.Name,key,exchange,false,nil)
+	err = channel.QueueBind(queue.Name, key, exchange, false, nil)
 	if err != nil {
 		return nil, amqp.Queue{}, err
 	}

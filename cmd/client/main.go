@@ -35,9 +35,13 @@ func main() {
 	if err != nil {
 		fmt.Printf("could not subscribe to pause: %v\n", err)
 	}
-	err = pubsub.SubscribeJSON(conn, routing.ExchangePerilTopic, fmt.Sprintf("%s.%s", routing.ArmyMovesPrefix, username), fmt.Sprintf("%s.*", routing.ArmyMovesPrefix), pubsub.Transient, handlerArmyMoves(gamestate))
+	err = pubsub.SubscribeJSON(conn, routing.ExchangePerilTopic, fmt.Sprintf("%s.%s", routing.ArmyMovesPrefix, username), fmt.Sprintf("%s.*", routing.ArmyMovesPrefix), pubsub.Transient, handlerArmyMoves(gamestate, channel))
 	if err != nil {
 		fmt.Printf("could not subscribe to army moves: %v\n", err)
+	}
+	err = pubsub.SubscribeJSON(conn, routing.ExchangePerilTopic, routing.WarRecognitionsPrefix, fmt.Sprintf("%s.*", routing.WarRecognitionsPrefix), pubsub.Durable, handlerWarMoves(gamestate, channel))
+	if err != nil {
+		fmt.Printf("could not subscribe to war: %v\n", err)
 	}
 	for {
 		words := gamelogic.GetInput()
